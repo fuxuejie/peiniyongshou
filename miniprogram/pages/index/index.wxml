@@ -1,0 +1,190 @@
+<view class="container">
+  <!-- Header -->
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-content">
+      <view>
+        <view class="text-2xl font-bold text-textMain">早上好，{{userInfo.nickName || '小减'}}</view>
+        <view class="text-xs text-textSub mt-1">今天是你坚持记录的第 <text class="text-primary font-bold">{{joinDays || 1}}</text> 天</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="main-content">
+    <!-- 核心数据看板 -->
+    <view class="card data-board">
+      <view class="flex-row justify-between items-center mb-2">
+        <view class="text-base font-bold text-textMain flex-row items-center">
+          <text class="emoji-icon">🍃</text> 今日剩余热量
+        </view>
+        <view class="tag-primary" wx:if="{{recommendDeficit > 0}}">目标日缺口: {{recommendDeficit}}kcal</view>
+      </view>
+      
+      <view class="ring-container">
+        <view class="ring-bg" style="background: conic-gradient({{ (targetCalorie - todayIntake + sportBurned) < 0 ? '#EF4444' : 'var(--primary)' }} {{progressPercent !== undefined ? progressPercent : 0}}%, #F3F4F6 {{progressPercent !== undefined ? progressPercent : 0}}%)">
+          <view class="ring-inner">
+            <text class="text-xs text-textSub mb-1">{{ (targetCalorie - todayIntake + sportBurned) < 0 ? '超标' : '还可吃' }}</text>
+            <text class="text-5xl font-extrabold {{ (targetCalorie - todayIntake + sportBurned) < 0 ? 'text-red-500' : 'text-textMain' }}">{{targetCalorie - todayIntake + sportBurned}}</text>
+            <text class="text-xs text-textLight mt-1 font-medium">千卡 (kcal)</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="stats-grid">
+        <view class="stat-item bg-gray">
+          <view class="text-xs text-textSub mb-1">推荐目标</view>
+          <view class="font-bold text-textMain text-base">{{targetCalorie}}</view>
+        </view>
+        <view class="stat-item bg-gray">
+          <view class="text-xs text-textSub mb-1">已摄入</view>
+          <view class="font-bold text-textMain text-base">{{todayIntake}}</view>
+        </view>
+        <view class="stat-item bg-gray">
+          <view class="text-xs text-textSub mb-1">运动消耗</view>
+          <view class="font-bold text-primary text-base flex-row items-center justify-center">
+            <text class="emoji-icon sm">🔥</text> {{sportBurned}}
+          </view>
+        </view>
+        <view class="stat-item bg-orange">
+          <view class="text-xs text-amber mb-1">碳水</view>
+          <view class="font-bold text-amber text-base">{{totalCarbs}}g</view>
+        </view>
+        <view class="stat-item bg-blue-light">
+          <view class="text-xs text-blue mb-1">蛋白</view>
+          <view class="font-bold text-blue text-base">{{totalProtein}}g</view>
+        </view>
+        <view class="stat-item bg-rose-light">
+          <view class="text-xs text-rose mb-1">脂肪</view>
+          <view class="font-bold text-rose text-base">{{totalFat}}g</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 饮食记录流水线 -->
+    <view class="section">
+      <view class="flex-row justify-between items-center mb-4">
+        <view class="text-base font-bold text-textMain">今日饮食流水</view>
+        <view class="text-xs text-textLight" bindtap="onRecordTap">+ 添加</view>
+      </view>
+      
+      <view class="record-list">
+        <!-- 动态列表 -->
+        <block wx:if="{{dietRecords.length > 0}}">
+          <t-swipe-cell class="mb-3 block" wx:for="{{dietRecords}}" wx:key="_id" right="{{swipeRightOptions}}" bind:click="onSwipeClick" data-item="{{item}}">
+            <view class="record-item" style="margin-bottom: 0;">
+              <view class="icon-box {{item.meal === 'breakfast' ? 'bg-orange' : item.meal === 'lunch' ? 'bg-blue' : item.meal === 'dinner' ? 'bg-purple' : 'bg-green'}}">
+                {{item.meal === 'breakfast' ? '🍞' : item.meal === 'lunch' ? '🍚' : item.meal === 'dinner' ? '🍽️' : '🍎'}}
+              </view>
+              <view class="flex-1">
+                <view class="flex-row items-center mb-1">
+                  <text class="font-bold text-textMain text-sm mr-2">{{item.meal === 'breakfast' ? '早餐' : item.meal === 'lunch' ? '午餐' : item.meal === 'dinner' ? '晚餐' : '加餐'}}</text>
+                  <text class="time-tag">{{item.timeStr}}</text>
+                </view>
+                <view class="text-xs text-textSub ellipsis">{{item.name || item.foodName}} {{item.amount}}份</view>
+              </view>
+              <view class="text-right flex-row items-center">
+                <view style="margin-right: 24rpx;">
+                  <view class="font-extrabold text-textMain text-base">{{item.calorie}}</view>
+                  <view class="text-xs text-textLight">千卡</view>
+                </view>
+                <t-icon name="chevron-right" size="40rpx" color="#9CA3AF" />
+              </view>
+            </view>
+          </t-swipe-cell>
+        </block>
+        
+        <block wx:else>
+          <!-- 暂无记录空状态 -->
+          <view class="empty-state bg-gray" bindtap="onRecordTap" style="border-radius: 24rpx; padding: 60rpx 0; text-align: center; border: 2rpx dashed #E5E7EB;">
+            <view class="text-5xl mb-3">🍳</view>
+            <view class="font-bold text-textMain text-base mb-1">今日还没记录哦</view>
+            <view class="text-xs text-textSub mb-4">新的一天，从记录第一口食物开始~</view>
+            <view class="tag-primary" style="display: inline-block; padding: 12rpx 36rpx; border-radius: 30rpx;">+ 立即记录</view>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 习惯打卡 -->
+    <view class="section mt-4">
+      <view class="flex-row justify-between items-center mb-4">
+        <view class="text-base font-bold text-textMain">健康习惯</view>
+        <view class="text-xs text-primary font-medium" bindtap="onEditHabits">编辑组件</view>
+      </view>
+      
+      <view class="habit-grid">
+        <view class="habit-card border-{{item.color}}" wx:for="{{activeHabits}}" wx:key="id" bindtap="onHabitTap" data-id="{{item.id}}">
+          <view class="habit-icon text-{{item.color}}">{{item.icon}}</view>
+          <view class="font-bold text-textMain text-sm">{{item.title}}</view>
+          <view class="text-xs text-textSub mt-1" wx:if="{{item.id === 'water'}}">
+            <text class="text-blue font-extrabold text-lg">{{waterCount}}</text> / {{waterTarget || 8}} 杯
+          </view>
+          <view class="mt-2" wx:elif="{{item.id === 'weight'}}">
+            <view class="text-xs text-textSub mb-1">当前 <text class="text-purple font-extrabold text-lg">{{currentWeight}}</text> kg</view>
+            <view class="text-xs text-textSub">目标 <text class="text-textMain font-bold text-sm">{{targetWeight}}</text> kg</view>
+          </view>
+          <view class="text-xs text-textSub mt-1" wx:else>点击打卡</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <ai-modal id="aiModal" bind:refresh="fetchTodayRecords"></ai-modal>
+
+  <!-- 喝水目标设置弹窗 -->
+  <view class="modal-mask" wx:if="{{showWaterTargetModal}}">
+    <view class="modal-content">
+      <view class="text-center mb-6">
+        <text class="text-lg font-bold text-textMain">设置每日喝水目标</text>
+      </view>
+      <view class="mb-6">
+        <input class="modal-input" type="number" placeholder="请输入目标杯数" value="{{tempWaterTarget}}" bindinput="onWaterTargetInput"/>
+      </view>
+      <view class="flex-row justify-between" style="gap: 16rpx;">
+        <view class="modal-btn btn-cancel" bindtap="cancelWaterTarget">取消</view>
+        <view class="modal-btn btn-confirm" bindtap="confirmWaterTarget">确定</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 体重管理弹窗 -->
+  <view class="modal-mask" wx:if="{{showWeightModal}}">
+    <view class="modal-content">
+      <view class="text-center mb-6">
+        <text class="text-lg font-bold text-textMain">体重管理</text>
+      </view>
+      <view class="mb-4">
+        <view class="text-sm text-textSub mb-2 text-center">当前体重 (kg)</view>
+        <input class="modal-input" type="digit" placeholder="当前体重" value="{{tempCurrentWeight}}" bindinput="onCurrentWeightInput"/>
+      </view>
+      <view class="mb-6">
+        <view class="text-sm text-textSub mb-2 text-center">目标体重 (kg)</view>
+        <input class="modal-input" type="digit" placeholder="目标体重" value="{{tempTargetWeight}}" bindinput="onTargetWeightInput"/>
+      </view>
+      <view class="flex-row justify-between" style="gap: 16rpx;">
+        <view class="modal-btn btn-cancel" bindtap="cancelWeight">取消</view>
+        <view class="modal-btn btn-confirm" bindtap="confirmWeight">确定</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 编辑饮食记录弹窗 -->
+  <view class="modal-mask" wx:if="{{showEditRecordModal}}">
+    <view class="modal-content">
+      <view class="text-center mb-6">
+        <text class="text-lg font-bold text-textMain">编辑饮食记录</text>
+      </view>
+      <view class="mb-4">
+        <view class="text-sm text-textSub mb-2 text-center">食物名称</view>
+        <input class="modal-input" type="text" placeholder="食物名称" value="{{editRecordData.name}}" bindinput="onEditRecordNameInput"/>
+      </view>
+      <view class="mb-6">
+        <view class="text-sm text-textSub mb-2 text-center">热量 (kcal)</view>
+        <input class="modal-input" type="number" placeholder="热量" value="{{editRecordData.calorie}}" bindinput="onEditRecordCalorieInput"/>
+      </view>
+      <view class="flex-row justify-between" style="gap: 16rpx;">
+        <view class="modal-btn btn-cancel" bindtap="cancelEditRecord">取消</view>
+        <view class="modal-btn btn-confirm" bindtap="confirmEditRecord">确定</view>
+      </view>
+    </view>
+  </view>
+</view>

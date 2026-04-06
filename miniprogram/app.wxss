@@ -1,0 +1,122 @@
+/**app.wxss**/
+
+page {
+  --primary: #10B981;
+  --primary-light: #D1FAE5;
+  --primary-dark: #059669;
+  --bg-main: #F9FAFB;
+  --card-white: #FFFFFF;
+  --text-main: #1F2937;
+  --text-sub: #6B7280;
+  --text-light: #9CA3AF;
+  
+  background-color: var(--bg-main);
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei UI', 'Microsoft YaHei',
+    Arial, sans-serif;
+  font-size: 14px;
+  color: var(--text-main);
+  box-sizing: border-box;
+}
+
+/* 隐藏滚动条 */
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+
+.container {
+  padding-bottom: 200rpx;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+/* 颜色工具类 */
+.text-primary { color: var(--primary); }
+.text-primary-dark { color: var(--primary-dark); }
+.text-textMain { color: var(--text-main); }
+.text-textSub { color: var(--text-sub); }
+.text-textLight { color: var(--text-light); }
+.text-white { color: #fff; }
+
+.bg-primary { background-color: var(--primary); }
+.bg-primary-light { background-color: var(--primary-light); }
+.bg-cardWhite { background-color: var(--card-white); }
+.bg-bgMain { background-color: var(--bg-main); }
+
+/* 卡片 */
+.card {
+  background-color: var(--card-white);
+  border-radius: 28rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx -2rpx rgba(0, 0, 0, 0.03);
+  border: 1rpx solid #F3F4F6;
+  margin-bottom: 24rpx;
+}
+
+.card-sm {
+  background-color: var(--card-white);
+  border-radius: 24rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.02);
+  border: 1rpx solid #F3F4F6;
+}
+
+/* 渐变按钮 */
+.btn-gradient {
+  background: linear-gradient(135deg, #34D399 0%, #10B981 100%);
+  color: white;
+  box-shadow: 0 8rpx 25rpx -5rpx rgba(16, 185, 129, 0.4);
+}
+
+/* 常用 Flex 布局 */
+.flex-row { display: flex; flex-direction: row; }
+.flex-column { display: flex; flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.flex-1 { flex: 1; }
+.gap-2 { gap: 16rpx; }
+.gap-3 { gap: 24rpx; }
+.gap-4 { gap: 32rpx; }
+.block { display: block; }
+
+/* 字体大小 */
+.text-xs { font-size: 24rpx; }
+.text-sm { font-size: 28rpx; }
+.text-base { font-size: 32rpx; }
+.text-lg { font-size: 36rpx; }
+.text-xl { font-size: 40rpx; }
+.text-2xl { font-size: 48rpx; }
+.text-4xl { font-size: 72rpx; }
+.text-5xl { font-size: 96rpx; }
+
+.font-bold { font-weight: bold; }
+.font-medium { font-weight: 500; }
+.font-extrabold { font-weight: 800; }
+
+.mt-1 { margin-top: 8rpx; }
+.mt-2 { margin-top: 16rpx; }
+.mt-3 { margin-top: 24rpx; }
+.mt-4 { margin-top: 32rpx; }
+.mt-6 { margin-top: 48rpx; }
+.mt-8 { margin-top: 64rpx; }
+.mb-1 { margin-bottom: 8rpx; }
+.mb-2 { margin-bottom: 16rpx; }
+.mb-3 { margin-bottom: 24rpx; }
+.mb-4 { margin-bottom: 32rpx; }
+.mb-6 { margin-bottom: 48rpx; }
+.mb-8 { margin-bottom: 64rpx; }
+
+.p-4 { padding: 32rpx; }
+.p-5 { padding: 40rpx; }
+.px-5 { padding-left: 40rpx; padding-right: 40rpx; }
+.py-2 { padding-top: 16rpx; padding-bottom: 16rpx; }
+.pt-12 { padding-top: 96rpx; }
+
+.rounded-full { border-radius: 9999rpx; }
+.rounded-2xl { border-radius: 32rpx; }
+
+/* 其他 utilities 可以在具体页面写或尽量通用 */

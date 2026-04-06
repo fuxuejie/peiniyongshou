@@ -1,0 +1,83 @@
+<t-popup visible="{{visible}}" bind:visible-change="onVisibleChange" placement="bottom" close-btn="{{true}}">
+  <view class="modal-container">
+    <scroll-view scroll-y="{{true}}" class="modal-scroll-area" style="max-height: {{aiResult ? '70vh' : '85vh'}};">
+      <view class="modal-content">
+        <view class="text-lg font-bold text-textMain mb-1 text-center mt-2">记录你吃了什么</view>
+        <view class="text-xs text-textSub text-center mb-5">拍照或描述，AI 帮你自动计算热量</view>
+
+        <view class="input-container mb-5">
+          <view class="flex-row items-start gap-3">
+            <view class="image-upload-box" bindtap="chooseImage" wx:if="{{!tempImagePath}}">
+              <view class="text-xl text-textLight">📷</view>
+              <view class="text-xs text-textLight mt-1">加图</view>
+            </view>
+            <view class="image-preview-box" wx:else>
+              <image class="preview-img" src="{{tempImagePath}}" mode="aspectFill"></image>
+              <view class="delete-img-btn" bindtap="removeImage">✕</view>
+            </view>
+            <textarea class="textarea flex-1" placeholder="拍张照，或者直接输入：中午吃了半碗面条..." placeholder-class="placeholder" value="{{inputText}}" bindinput="onInput" maxlength="200"></textarea>
+          </view>
+          <view class="flex-row justify-end mt-3">
+            <view class="send-btn" bindtap="sendText">
+              <text class="text-sm font-bold">🌟 AI 识别</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="text-xs text-textSub mb-2">选择用餐时段</view>
+        <view class="flex-row gap-2 mb-5">
+          <view class="meal-btn {{meal === 'breakfast' ? 'active' : ''}}" data-meal="breakfast" bindtap="selectMeal">早餐</view>
+          <view class="meal-btn {{meal === 'lunch' ? 'active' : ''}}" data-meal="lunch" bindtap="selectMeal">午餐</view>
+          <view class="meal-btn {{meal === 'dinner' ? 'active' : ''}}" data-meal="dinner" bindtap="selectMeal">晚餐</view>
+          <view class="meal-btn {{meal === 'snack' ? 'active' : ''}}" data-meal="snack" bindtap="selectMeal">加餐</view>
+        </view>
+
+        <block wx:if="{{aiResult}}">
+          <view class="text-xs text-textSub mb-2" wx:if="{{candidateList.length > 1}}">AI 提供了几个可能的结果，请选择最准确的：</view>
+          <scroll-view scroll-x="{{true}}" class="candidate-tabs-scroll mb-4" wx:if="{{candidateList.length > 1}}">
+            <view class="candidate-tabs">
+              <view wx:for="{{candidateList}}" wx:key="index" class="candidate-tab {{selectedIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="selectCandidate">
+                {{item.name}}
+              </view>
+            </view>
+          </scroll-view>
+
+          <view class="result-box mb-4">
+            <view class="flex-row items-center gap-2 mb-2">
+              <text class="text-xs text-primary">✨ 营养成分</text>
+            </view>
+            <view class="flex-row justify-between items-center">
+              <view>
+                <view class="text-sm font-bold text-textMain">{{aiResult.name}}</view>
+                <view class="text-xs text-textSub mt-1">预估份量: {{aiResult.weight}}g</view>
+              </view>
+              <view class="text-right">
+                <view class="text-xl font-extrabold text-primary">{{aiResult.calorie}}</view>
+                <view class="text-xs text-textLight">千卡</view>
+              </view>
+            </view>
+            <view class="flex-row gap-3 mt-3 pt-3 border-t">
+              <view class="text-xs text-textSub">碳水 <text class="font-bold text-amber">{{aiResult.carbs}}g</text></view>
+              <view class="text-xs text-textSub">蛋白 <text class="font-bold text-blue">{{aiResult.protein}}g</text></view>
+              <view class="text-xs text-textSub">脂肪 <text class="font-bold text-rose">{{aiResult.fat}}g</text></view>
+            </view>
+          </view>
+
+          <view class="text-xs text-textSub mb-2">调整份量</view>
+          <view class="flex-row items-center justify-center gap-4 mb-5">
+            <view class="amount-btn" bindtap="decreaseAmount">-</view>
+            <view class="text-lg font-bold text-textMain w-20 text-center">{{amount}} 份</view>
+            <view class="amount-btn" bindtap="increaseAmount">+</view>
+          </view>
+        </block>
+        <block wx:if="{{isLoading}}">
+            <view class="text-center text-sm text-textSub my-6">AI 正在飞速计算中...</view>
+        </block>
+      </view>
+    </scroll-view>
+    
+    <view wx:if="{{aiResult}}" class="modal-footer">
+      <view class="btn-gradient submit-btn" bindtap="confirmRecord">确认记录</view>
+    </view>
+  </view>
+</t-popup>

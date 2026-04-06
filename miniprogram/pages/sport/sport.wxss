@@ -1,0 +1,97 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(249, 250, 251, 0.9);
+  backdrop-filter: blur(12px);
+  padding: 0 40rpx 20rpx 40rpx;
+}
+.main-content { padding: 40rpx; }
+.sport-card {
+  background: linear-gradient(to bottom right, #10B981, #059669);
+  box-shadow: 0 8rpx 25rpx -5rpx rgba(16, 185, 129, 0.4);
+}
+.border-t-white {
+  border-top: 2rpx solid rgba(255,255,255,0.2);
+}
+.opacity-70 { opacity: 0.7; }
+.pt-4 { padding-top: 32rpx; }
+
+/* 按钮样式 */
+.swipe-btn-edit {
+  background-color: var(--primary-light) !important;
+  color: var(--primary) !important;
+  width: 140rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.swipe-btn-delete {
+  background-color: #FEF2F2 !important;
+  color: #EF4444 !important;
+  width: 140rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border-top-right-radius: 32rpx;
+  border-bottom-right-radius: 32rpx;
+}
+
+/* 弹窗样式 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: #FFFFFF;
+  width: 80%;
+  border-radius: 48rpx;
+  padding: 48rpx;
+  box-sizing: border-box;
+}
+
+.modal-input {
+  background-color: #F9FAFB;
+  height: 96rpx;
+  border-radius: 24rpx;
+  padding: 0 32rpx;
+  font-size: 32rpx;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.modal-btn {
+  flex: 1;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24rpx;
+  font-weight: bold;
+  font-size: 30rpx;
+}
+
+.btn-cancel {
+  background-color: #F9FAFB;
+  color: var(--text-sub);
+}
+
+.btn-confirm {
+  background-color: var(--primary);
+  color: #FFFFFF;
+}

@@ -1,0 +1,107 @@
+<view class="container pb-20">
+  <view class="header flex-row justify-between items-center" style="padding-top: {{statusBarHeight}}px;">
+    <view>
+      <view class="text-2xl font-bold text-textMain tracking-tight">运动记录</view>
+      <view class="text-xs text-textSub mt-1">让每一滴汗水都有价值</view>
+    </view>
+    <t-button theme="primary" variant="light" size="small" icon="calendar" shape="round" bind:tap="showCalendar">日历</t-button>
+  </view>
+
+  <view class="main-content">
+    <view class="card sport-card" style="background: linear-gradient(135deg, #34D399, #10B981); border-radius: 32rpx; padding: 40rpx; box-shadow: 0 12rpx 30rpx rgba(16, 185, 129, 0.3);">
+      <view class="text-white text-xs mb-1">{{isToday ? '今日总消耗' : '该日总消耗'}}</view>
+      <view class="text-white text-4xl font-extrabold mb-4">{{totalBurned}} <text class="text-base font-normal">kcal</text></view>
+      
+      <view class="flex-row justify-between pt-4" style="border-top: 1rpx solid rgba(255,255,255,0.3);">
+        <view class="flex-1">
+          <view class="text-xs text-white opacity-80">运动步数</view>
+          <view class="text-sm font-bold text-white mt-1">{{totalSteps}} 步</view>
+        </view>
+        <view class="flex-1">
+          <view class="text-xs text-white opacity-80">总运动时长</view>
+          <view class="text-sm font-bold text-white mt-1">{{totalDuration}} 分钟</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- AI 运动记录输入 -->
+    <view class="mt-8">
+      <view class="text-base font-bold text-textMain mb-3">AI 语音/文字记录运动</view>
+      <view class="flex-row gap-2">
+        <view class="flex-1">
+          <t-input placeholder="例如：跑步30分钟，或游泳1小时" value="{{sportInput}}" bind:change="onSportInput" borderless clearable style="background-color: #F9FAFB; border-radius: 16rpx; border: 1rpx solid #E5E7EB;"></t-input>
+        </view>
+        <t-button theme="primary" bind:tap="addSportRecord" loading="{{isAiCalculating}}">记录</t-button>
+      </view>
+    </view>
+
+    <!-- 运动列表 -->
+    <view class="mt-8">
+      <view class="text-base font-bold text-textMain mb-4">{{isToday ? '今日运动流水' : '历史运动流水'}}</view>
+      
+      <block wx:if="{{sportRecords.length > 0}}">
+        <t-swipe-cell class="mb-3 block" wx:for="{{sportRecords}}" wx:key="_id" right="{{swipeRightOptions}}" bind:click="onSwipeClick" data-item="{{item}}">
+          <view class="record-item bg-white p-4 rounded-2xl flex-row items-center justify-between shadow-sm" style="margin-bottom: 0;">
+            <view class="flex-row items-center gap-3">
+              <view class="icon-box bg-blue text-lg" style="width: 80rpx; height: 80rpx; background: #EEF2FF; border-radius: 20rpx; display: flex; align-items: center; justify-content: center;">🏃</view>
+              <view>
+                <view class="font-bold text-textMain text-sm">{{item.sportName}}</view>
+                <view class="text-xs text-textSub mt-1">{{item.duration}} 分钟 · {{item.timeStr}}</view>
+              </view>
+            </view>
+            <view class="text-right flex-row items-center">
+              <view style="margin-right: 24rpx;">
+                <view class="font-extrabold text-primary text-lg">{{item.calorie}}</view>
+                <view class="text-xs text-textLight">千卡</view>
+              </view>
+              <t-icon name="chevron-right" size="40rpx" color="#9CA3AF" />
+            </view>
+          </view>
+        </t-swipe-cell>
+      </block>
+      <block wx:else>
+        <view class="text-center py-10 opacity-50">
+          <view class="text-4xl mb-2">👟</view>
+          <view class="text-sm font-medium text-textSub">这天没有运动记录哦</view>
+          <view class="text-xs text-textLight mt-1">生命在于运动，赶紧动起来吧！</view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
+
+<t-calendar
+  visible="{{calendarVisible}}"
+  title="运动日历"
+  type="single"
+  minDate="{{minDate}}"
+  maxDate="{{maxDate}}"
+  value="{{selectedDate}}"
+  bind:confirm="onCalendarConfirm"
+  bind:close="hideCalendar"
+/>
+
+<!-- 编辑运动记录弹窗 -->
+<view class="modal-mask" wx:if="{{showEditSportModal}}">
+  <view class="modal-content">
+    <view class="text-center mb-6">
+      <text class="text-lg font-bold text-textMain">编辑运动记录</text>
+    </view>
+    <view class="mb-4">
+      <view class="text-sm text-textSub mb-2 text-center">运动名称</view>
+      <input class="modal-input" type="text" placeholder="运动名称" value="{{editSportData.sportName}}" bindinput="onEditSportNameInput"/>
+    </view>
+    <view class="mb-4">
+      <view class="text-sm text-textSub mb-2 text-center">时长 (分钟)</view>
+      <input class="modal-input" type="number" placeholder="时长" value="{{editSportData.duration}}" bindinput="onEditSportDurationInput"/>
+    </view>
+    <view class="mb-6">
+      <view class="text-sm text-textSub mb-2 text-center">热量 (kcal)</view>
+      <input class="modal-input" type="number" placeholder="热量" value="{{editSportData.calorie}}" bindinput="onEditSportCalorieInput"/>
+    </view>
+    <view class="flex-row justify-between" style="gap: 16rpx;">
+      <view class="modal-btn btn-cancel" bindtap="cancelEditSport">取消</view>
+      <view class="modal-btn btn-confirm" bindtap="confirmEditSport">确定</view>
+    </view>
+  </view>
+</view>

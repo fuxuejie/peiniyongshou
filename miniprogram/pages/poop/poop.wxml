@@ -1,0 +1,28 @@
+<view class="container">
+  <view class="calendar-header">
+    <view class="month-selector">
+      <view class="arrow" bindtap="prevMonth">‹</view>
+      <view class="current-month">{{currentMonth}}月</view>
+      <view class="arrow" bindtap="nextMonth">›</view>
+    </view>
+  </view>
+
+  <view class="weekdays">
+    <view>周日</view><view>周一</view><view>周二</view><view>周三</view><view>周四</view><view>周五</view><view>周六</view>
+  </view>
+
+  <view class="days-grid">
+    <view class="day-cell" wx:for="{{calendarDays}}" wx:key="index" bindtap="onDayTap" data-date="{{item.dateStr}}">
+      <block wx:if="{{!item.empty}}">
+        <view class="day-box {{item.isToday ? 'today' : ''}} {{item.count > 0 ? 'has-record' : ''}}">
+          <view class="day-num">{{item.isToday ? '今' : item.day}}</view>
+          <view class="record-badge" wx:if="{{item.count > 0}}">{{item.count}}</view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="info-card">
+    <view class="text-center text-textSub text-sm">点击日历中的日期记录便便次数</view>
+  </view>
+</view>

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "生理期",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button"
+  }
+}

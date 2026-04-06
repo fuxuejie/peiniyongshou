@@ -1,0 +1,45 @@
+<view class="container">
+  <view class="calendar-header">
+    <view class="month-selector">
+      <view class="arrow" bindtap="prevMonth">‹</view>
+      <view class="current-month">{{currentMonth}}月</view>
+      <view class="arrow" bindtap="nextMonth">›</view>
+    </view>
+  </view>
+
+  <view class="weekdays">
+    <view>周日</view><view>周一</view><view>周二</view><view>周三</view><view>周四</view><view>周五</view><view>周六</view>
+  </view>
+
+  <view class="days-grid">
+    <view class="day-cell" wx:for="{{calendarDays}}" wx:key="index">
+      <block wx:if="{{!item.empty}}">
+        <view class="day-box {{item.type}} {{item.isToday ? 'today' : ''}}">
+          {{item.isToday ? '今' : item.day}}
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="legend">
+    <view class="legend-item"><view class="dot period"></view> 经期</view>
+    <view class="legend-item"><view class="dot predict"></view> 预测经期</view>
+    <view class="legend-item"><view class="dot ovulation"></view> 排卵期</view>
+    <view class="legend-item"><view class="dot ovulation-day"></view> 排卵日</view>
+  </view>
+
+  <view class="card info-card">
+    <view class="flex-row justify-between items-center mb-4">
+      <view class="text-lg font-bold">排卵期 / 经期记录</view>
+      <t-button theme="primary" size="small" shape="round" bindtap="startPeriod">开始经期</t-button>
+    </view>
+    <view class="flex-row justify-between pt-4 border-t">
+      <view class="text-textSub">近6个月平均经期</view>
+      <view class="font-bold">7 天</view>
+    </view>
+    <view class="flex-row justify-between pt-3">
+      <view class="text-textSub">近6个月平均周期</view>
+      <view class="font-bold">32 天</view>
+    </view>
+  </view>
+</view>

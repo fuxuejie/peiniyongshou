@@ -1,0 +1,42 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(249, 250, 251, 0.9);
+  backdrop-filter: blur(12px);
+  padding: 0 40rpx 20rpx 40rpx;
+}
+.main-content { padding: 40rpx; }
+.avatar-btn {
+  padding: 0;
+  margin: 0;
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 32rpx;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar-btn::after {
+  border: none;
+}
+.avatar-lg {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 32rpx;
+  border: 4rpx solid rgba(16, 185, 129, 0.2);
+}
+.edit-btn {
+  font-size: 24rpx;
+  color: var(--primary);
+  background-color: var(--primary-light);
+  padding: 12rpx 24rpx;
+  border-radius: 32rpx;
+  font-weight: 500;
+}
+
+/* 清除按钮自带样式 */
+button.bg-white::after {
+  border: none;
+}

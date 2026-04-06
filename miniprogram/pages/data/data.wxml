@@ -1,0 +1,93 @@
+<view class="container">
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="text-2xl font-bold text-textMain tracking-tight">数据统计</view>
+    <view class="text-xs text-textSub mt-1">全方位了解你的身体变化</view>
+  </view>
+
+  <t-tabs defaultValue="day" bind:change="onTabChange" t-class="custom-tabs">
+    <t-tab-panel label="按日" value="day" />
+    <t-tab-panel label="按周" value="week" />
+    <t-tab-panel label="按月" value="month" />
+    <t-tab-panel label="自定义" value="custom" />
+  </t-tabs>
+
+  <view class="main-content">
+    <!-- 周期净摄入横幅 -->
+    <view class="deficit-banner mb-4 flex-row items-center justify-between">
+      <view>
+        <view class="text-sm font-bold text-white">周期热量净摄入</view>
+        <view class="text-xs text-white opacity-80 mt-1">摄入减去运动消耗的总和</view>
+      </view>
+      <view class="text-3xl font-bold text-white">{{summary.periodDeficit}} <text class="text-base font-normal">kcal</text></view>
+    </view>
+
+    <view class="summary-card mb-4">
+      <view class="summary-item">
+        <view class="text-xs text-textSub">日均摄入</view>
+        <view class="text-xl font-bold text-textMain mt-1">{{summary.avgIntake}} <text class="text-xs font-normal text-textLight">kcal</text></view>
+      </view>
+      <view class="divider-v"></view>
+      <view class="summary-item">
+        <view class="text-xs text-textSub">日均缺口</view>
+        <view class="text-xl font-bold text-primary mt-1">{{summary.avgDeficit}} <text class="text-xs font-normal text-textLight">kcal</text></view>
+      </view>
+      <view class="divider-v"></view>
+      <view class="summary-item">
+        <view class="text-xs text-textSub">达标天数</view>
+        <view class="text-xl font-bold text-textMain mt-1">{{summary.successDays}} <text class="text-xs font-normal text-textLight">天</text></view>
+      </view>
+    </view>
+
+    <view class="flex-row justify-between items-center mb-4">
+      <view class="text-base font-bold text-textMain">热量摄入 (kcal)</view>
+      <view class="text-xs text-primary" wx:if="{{currentTab === 'custom'}}" bindtap="showCalendar">{{customDateStr ? customDateStr : '选择日期'}} ▾</view>
+    </view>
+
+    <view class="card">
+      <view class="chart-container">
+        <!-- 柱状图区域 -->
+        <view class="bars-area">
+          <view class="bar-group" wx:for="{{intakeChartData}}" wx:key="day">
+            <view class="bar-wrapper">
+              <view class="bar-fill {{item.calorie > targetCalorie ? 'bg-orange' : 'bg-green'}}" style="height: {{(item.calorie / 2500) * 100 > 100 ? 100 : (item.calorie / 2500) * 100}}%; {{item.calorie === 0 ? 'background-color: transparent;' : 'min-height: 4rpx;'}}">
+                <view class="bar-value {{item.calorie > targetCalorie ? 'text-amber' : 'text-primary'}}">{{item.calorie > 0 ? item.calorie : ''}}</view>
+              </view>
+            </view>
+            <view class="bar-label">{{item.day}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="flex-row justify-between items-center mb-4 mt-6">
+      <view class="text-base font-bold text-textMain">运动消耗 (kcal)</view>
+    </view>
+
+    <view class="card">
+      <view class="chart-container">
+        <!-- 柱状图区域 -->
+        <view class="bars-area">
+          <view class="bar-group" wx:for="{{sportChartData}}" wx:key="day">
+            <view class="bar-wrapper">
+              <view class="bar-fill bg-blue" style="height: {{(item.burn / 1000) * 100 > 100 ? 100 : (item.burn / 1000) * 100}}%; {{item.burn === 0 ? 'background-color: transparent;' : 'min-height: 4rpx;'}}">
+                <view class="bar-value text-blue">{{item.burn > 0 ? item.burn : ''}}</view>
+              </view>
+            </view>
+            <view class="bar-label">{{item.day}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<t-calendar
+  visible="{{calendarVisible}}"
+  title="选择自定义时间段"
+  type="range"
+  minDate="{{minDate}}"
+  maxDate="{{maxDate}}"
+  value="{{customDateRange}}"
+  bind:confirm="onCalendarConfirm"
+  bind:close="hideCalendar"
+/>

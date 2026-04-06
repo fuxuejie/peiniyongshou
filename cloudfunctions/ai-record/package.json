@@ -1,0 +1,10 @@
+{
+  "name": "ai-record",
+  "version": "1.0.0",
+  "description": "AI 识别饮食热量云函数",
+  "main": "index.js",
+  "dependencies": {
+    "@cloudbase/node-sdk": "^3.17.0",
+    "wx-server-sdk": "~2.6.3"
+  }
+}

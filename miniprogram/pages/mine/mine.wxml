@@ -1,0 +1,68 @@
+<view class="container">
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="text-2xl font-bold text-textMain tracking-tight">我的</view>
+  </view>
+
+  <view class="main-content">
+    <view class="card flex-row items-center gap-4">
+      <button class="avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+        <image src="{{userInfo.avatarUrl || 'https://placehold.co/100x100/10B981/FFFFFF?text=Ava'}}" class="avatar-lg"></image>
+      </button>
+      <view class="flex-1">
+        <input type="nickname" class="font-bold text-textMain text-lg bg-transparent" placeholder="点击设置昵称" value="{{userInfo.nickName}}" bindblur="onInputNickname" />
+        <view class="text-xs text-textSub mt-1">已加入减脂 <text class="text-primary font-bold">{{joinDays}}</text> 天</view>
+      </view>
+    </view>
+
+    <!-- 设置与目标 -->
+    <view class="section mt-6">
+      <view class="text-base font-bold text-textMain mb-4">减脂目标</view>
+      <view class="card p-0 overflow-hidden">
+        <view class="flex-row justify-between items-center p-4 border-b" bindtap="onEditTargetWeight">
+          <view class="text-sm text-textMain">目标体重</view>
+          <view class="flex-row items-center gap-2">
+            <view class="text-sm font-bold text-textSub">{{userInfo.targetWeight || 60}} kg</view>
+            <view class="text-xs text-textLight">></view>
+          </view>
+        </view>
+        <view class="flex-row justify-between items-center p-4 border-b" bindtap="onEditTargetDays">
+          <view class="text-sm text-textMain">计划天数</view>
+          <view class="flex-row items-center gap-2">
+            <view class="text-sm font-bold text-textSub">{{userInfo.targetDays || 30}} 天</view>
+            <view class="text-xs text-textLight">></view>
+          </view>
+        </view>
+        <view class="flex-row justify-between items-center p-4">
+          <view class="text-sm text-textMain">推荐每日热量缺口</view>
+          <view class="text-sm font-bold text-primary">{{recommendDeficit}} kcal</view>
+        </view>
+        <view class="flex-row justify-between items-center p-4 border-t" bindtap="onEditTargetCalorie">
+          <view class="text-sm text-textMain">每日目标摄入</view>
+          <view class="flex-row items-center gap-2">
+            <view class="text-sm font-bold text-textSub">{{userInfo.targetCalorie || 1600}} kcal</view>
+            <view class="text-xs text-textLight">></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 更多工具 -->
+    <view class="section mt-6">
+      <view class="text-base font-bold text-textMain mb-4">更多服务</view>
+      <view class="card p-0 overflow-hidden">
+        <button class="flex-row justify-between items-center p-4 border-b bg-white text-left" open-type="feedback" style="width: 100%; border-radius: 0; font-weight: normal; margin: 0; line-height: inherit;">
+          <view class="text-sm text-textMain">意见反馈</view>
+          <view class="text-xs text-textLight">></view>
+        </button>
+        <view class="flex-row justify-between items-center p-4 border-b" bindtap="clearCache">
+          <view class="text-sm text-textMain">清除缓存</view>
+          <view class="text-xs text-textLight">></view>
+        </view>
+        <view class="flex-row justify-between items-center p-4" bindtap="showAbout">
+          <view class="text-sm text-textMain">关于陪你永瘦</view>
+          <view class="text-xs text-textLight">></view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

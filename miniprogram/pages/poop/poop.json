@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "便便打卡",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button"
+  }
+}
