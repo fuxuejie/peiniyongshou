@@ -1,3 +1,6 @@
+const app = getApp()
+const { fetchUserStats } = require('../../utils/common')
+
 Page({
   data: {
     statusBarHeight: 20,
@@ -30,44 +33,7 @@ Page({
   },
 
   async fetchUserStats() {
-    try {
-      let firstTime = wx.getStorageSync('firstRecordTime');
-      
-      if (!firstTime) {
-        const db = wx.cloud.database({ env: 'cloudbase-7gd5buxj2de5a644' });
-        const dietRes = await db.collection('DietRecord').orderBy('createTime', 'asc').limit(1).get();
-        const sportRes = await db.collection('SportRecord').orderBy('createTime', 'asc').limit(1).get();
-        
-        firstTime = new Date().getTime();
-        
-        let hasRecord = false;
-        
-        if (dietRes.data.length > 0) {
-          firstTime = Math.min(firstTime, new Date(dietRes.data[0].createTime).getTime());
-          hasRecord = true;
-        }
-        if (sportRes.data.length > 0) {
-          firstTime = Math.min(firstTime, new Date(sportRes.data[0].createTime).getTime());
-          hasRecord = true;
-        }
-        
-        // 只有在真正有记录的情况下，才缓存首次记录时间，避免过早锁定无记录时间
-        if (hasRecord) {
-          wx.setStorageSync('firstRecordTime', firstTime);
-        }
-      }
-      
-      const now = new Date().getTime();
-      const diff = now - firstTime;
-      const joinDays = Math.max(1, Math.floor(diff / (1000 * 60 * 60 * 24)) + 1);
-      
-      this.setData({ joinDays });
-    } catch (err) {
-      console.error('获取统计数据失败', err);
-      if (!this.data.joinDays || this.data.joinDays <= 1) {
-        this.setData({ joinDays: 1 });
-      }
-    }
+    await fetchUserStats(this)
   },
   
   calculateDeficit() {

@@ -1,3 +1,6 @@
+const app = getApp()
+const { getDB, formatTime } = require('../../utils/common')
+
 Page({
   data: {
     statusBarHeight: 20,
@@ -56,7 +59,7 @@ Page({
         wx.cloud.callFunction({
           name: 'getOpenId',
           config: {
-            env: 'cloudbase-7gd5buxj2de5a644'
+            env: app.globalData.envId
           },
           data: {
             weRunData: wx.cloud.CloudID(res.cloudID)
@@ -96,7 +99,7 @@ Page({
   },
 
   fetchSportRecords() {
-    const db = wx.cloud.database({ env: 'cloudbase-7gd5buxj2de5a644' })
+    const db = getDB()
     const _ = db.command
     const targetDate = new Date(this.data.selectedDate)
     
@@ -171,7 +174,7 @@ Page({
             return
           }
 
-          const db = wx.cloud.database({ env: 'cloudbase-7gd5buxj2de5a644' })
+          const db = getDB()
           
           // 如果选择的不是今天，就把 createTime 设置为选择的日期
           const recordDate = new Date(this.data.selectedDate)
@@ -225,7 +228,7 @@ Page({
       content: '确定要删除这条运动记录吗？',
       success: (res) => {
         if (res.confirm) {
-          wx.cloud.database({ env: 'cloudbase-7gd5buxj2de5a644' }).collection('SportRecord').doc(id).remove().then(() => {
+          wx.cloud.database({ env: app.globalData.envId }).collection('SportRecord').doc(id).remove().then(() => {
             wx.showToast({ title: '删除成功' })
             this.fetchSportRecords()
           })
@@ -279,7 +282,7 @@ Page({
       return
     }
     
-    wx.cloud.database({ env: 'cloudbase-7gd5buxj2de5a644' })
+    wx.cloud.database({ env: app.globalData.envId })
       .collection('SportRecord')
       .doc(_id)
       .update({

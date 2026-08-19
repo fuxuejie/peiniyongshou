@@ -1,8 +1,18 @@
 ---
 name: ai-model-web
 description: Use this skill when developing browser/Web applications (React/Vue/Angular, static websites, SPAs) that need AI capabilities. Features text generation (generateText) and streaming (streamText) via @cloudbase/js-sdk. Built-in models include Hunyuan (hunyuan-2.0-instruct-20251111 recommended) and DeepSeek (deepseek-v3.2 recommended). NOT for Node.js backend (use ai-model-nodejs), WeChat Mini Program (use ai-model-wechat), or image generation (Node SDK only).
+version: 2.17.1
 alwaysApply: false
 ---
+
+## Standalone Install Note
+
+If this environment only installed the current skill, start from the CloudBase main entry and use the published `cloudbase/references/...` paths for sibling skills.
+
+- CloudBase main entry: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/SKILL.md`
+- Current skill raw source: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/ai-model-web/SKILL.md`
+
+Keep local `references/...` paths for files that ship with the current skill directory. When this file points to a sibling skill such as `auth-tool` or `web-development`, use the standalone fallback URL shown next to that reference.
 
 ## When to use this skill
 
@@ -109,6 +119,25 @@ const usage = await res.usage;        // Token usage
 
 ---
 
+## Error Handling Pattern
+
+```js
+const model = ai.createModel("deepseek");
+
+try {
+  const result = await model.generateText({
+    model: "deepseek-v3.2",
+    messages: [{ role: "user", content: "Generate a concise onboarding checklist" }],
+  });
+
+  console.log(result.text);
+} catch (error) {
+  console.error("Failed to call CloudBase AI from Web", error);
+}
+```
+
+---
+
 ## Type Definitions
 
 ```ts
@@ -156,4 +185,3 @@ interface Usage {
 3. **Keep accessKey secure** - Use publishable key, not secret key
 4. **Initialize early** - Initialize SDK in app entry point
 5. **Ensure authentication** - User must be signed in before AI calls
-

@@ -1,3 +1,6 @@
+const app = getApp()
+const { getDB, formatDate } = require('../../utils/common')
+
 Page({
   data: {
     statusBarHeight: 20,
@@ -68,13 +71,11 @@ Page({
     }
   },
 
-  formatDate(d) {
-    return `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`
-  },
+  // formatDate 已从 utils/common 导入
 
   async fetchActualData(tab) {
     wx.showLoading({ title: '加载中' })
-    const db = wx.cloud.database({ env: 'cloudbase-7gd5buxj2de5a644' })
+    const db = getDB()
     const _ = db.command
 
     let startDate = new Date()

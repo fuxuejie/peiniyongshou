@@ -1,7 +1,7 @@
 Page({
   data: {
-    currentYear: 2026,
-    currentMonth: 4,
+    currentYear: new Date().getFullYear(),
+    currentMonth: new Date().getMonth() + 1,
     calendarDays: [],
     periodStartDate: '', // '2026-04-19'
     periodDays: 7,

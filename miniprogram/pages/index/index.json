@@ -1,6 +1,6 @@
 {
   "usingComponents": {
-    "ai-modal": "../../components/ai-modal/ai-modal",
+    "ai-modal": "../../components/ai-modal/index",
     "t-swipe-cell": "tdesign-miniprogram/swipe-cell/swipe-cell",
     "t-icon": "tdesign-miniprogram/icon/icon"
   },

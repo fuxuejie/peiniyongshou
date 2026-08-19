@@ -1,8 +1,18 @@
 ---
 name: cloud-functions
 description: CloudBase function runtime guide for building, deploying, and debugging your own Event Functions or HTTP Functions. This skill should be used when users need application runtime code on CloudBase, not when they are merely calling CloudBase official platform APIs.
+version: 2.17.1
 alwaysApply: false
 ---
+
+## Standalone Install Note
+
+If this environment only installed the current skill, start from the CloudBase main entry and use the published `cloudbase/references/...` paths for sibling skills.
+
+- CloudBase main entry: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/SKILL.md`
+- Current skill raw source: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/cloud-functions/SKILL.md`
+
+Keep local `references/...` paths for files that ship with the current skill directory. When this file points to a sibling skill such as `auth-tool` or `web-development`, use the standalone fallback URL shown next to that reference.
 
 # Cloud Functions Development
 
@@ -22,10 +32,10 @@ alwaysApply: false
 ### Then also read
 
 - Detailed reference routing -> `./references.md`
-- Auth setup or provider-related backend work -> `../auth-tool/SKILL.md`
-- AI in functions -> `../ai-model-nodejs/SKILL.md`
-- Long-lived container services or Agent runtimes -> `../cloudrun-development/SKILL.md`
-- Calling CloudBase official platform APIs from a client or script -> `../http-api/SKILL.md`
+- Auth setup or provider-related backend work -> `../auth-tool/SKILL.md` (standalone fallback: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/auth-tool/SKILL.md`)
+- AI in functions -> `../ai-model-nodejs/SKILL.md` (standalone fallback: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/ai-model-nodejs/SKILL.md`)
+- Long-lived container services or Agent runtimes -> `../cloudrun-development/SKILL.md` (standalone fallback: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/cloudrun-development/SKILL.md`)
+- Calling CloudBase official platform APIs from a client or script -> `../http-api/SKILL.md` (standalone fallback: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/http-api/SKILL.md`)
 
 ### Do NOT use for
 
@@ -111,6 +121,62 @@ Use this skill when developing, deploying, and operating CloudBase cloud functio
 | `scf_bootstrap` | Not required | Required |
 | Dependencies | Auto-installed from `package.json` | Must be packaged with function code |
 | Best for | serverless handlers, scheduled jobs | APIs, SSE, WebSocket, browser-facing services |
+
+## Minimal code skeletons
+
+### Event Function hello world
+
+`cloudfunctions/hello-event/index.js`
+
+```js
+exports.main = async (event, context) => {
+  return {
+    ok: true,
+    message: "hello from event function",
+    event,
+  };
+};
+```
+
+`cloudfunctions/hello-event/package.json`
+
+```json
+{
+  "name": "hello-event",
+  "version": "1.0.0"
+}
+```
+
+### HTTP Function hello world
+
+`cloudfunctions/hello-http/index.js`
+
+```js
+const http = require("http");
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "application/json" });
+  res.end(JSON.stringify({ ok: true, message: "hello from http function" }));
+});
+
+server.listen(9000);
+```
+
+`cloudfunctions/hello-http/scf_bootstrap`
+
+```bash
+#!/bin/bash
+/var/lang/node18/bin/node index.js
+```
+
+`cloudfunctions/hello-http/package.json`
+
+```json
+{
+  "name": "hello-http",
+  "version": "1.0.0"
+}
+```
 
 ## Preferred tool map
 

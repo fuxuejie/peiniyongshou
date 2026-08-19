@@ -1,8 +1,18 @@
 ---
 name: spec-workflow
-description: Standard software engineering workflow for requirement analysis, technical design, and task planning. Use this skill when developing new features, complex architecture designs, multi-module integrations, or projects involving database/UI design.
+description: Use when medium-to-large changes need explicit requirements, technical design, and task planning before implementation, especially for multi-module work, unclear acceptance criteria, or architecture-heavy requests.
+version: 2.17.1
 alwaysApply: false
 ---
+
+## Standalone Install Note
+
+If this environment only installed the current skill, start from the CloudBase main entry and use the published `cloudbase/references/...` paths for sibling skills.
+
+- CloudBase main entry: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/SKILL.md`
+- Current skill raw source: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/spec-workflow/SKILL.md`
+
+Keep local `references/...` paths for files that ship with the current skill directory. When this file points to a sibling skill such as `auth-tool` or `web-development`, use the standalone fallback URL shown next to that reference.
 
 # Spec Workflow
 
@@ -21,8 +31,8 @@ alwaysApply: false
 
 ### Then also read
 
-- Frontend page or visual design work -> `../ui-design/SKILL.md`
-- Advanced data-model work -> `../data-model-creation/SKILL.md`
+- Frontend page or visual design work -> `../ui-design/SKILL.md` (standalone fallback: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/ui-design/SKILL.md`)
+- Advanced data-model work -> `../data-model-creation/SKILL.md` (standalone fallback: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/data-model-creation/SKILL.md`)
 
 ### Do NOT use for
 
@@ -42,6 +52,7 @@ alwaysApply: false
 
 - Decide whether the change really needs the full spec flow.
 - If yes, stop and produce requirements first.
+- If the change is small, low-risk, and acceptance is already clear, allow direct execution without forcing spec artifacts.
 - Use EARS-style acceptance criteria.
 - Get confirmation before moving to the next phase.
 
@@ -67,6 +78,7 @@ Use this workflow for structured development when you need to:
 ### Skip the full workflow when
 
 - The task is small, low-risk, and already precise
+- Goal, scope, and acceptance are already clear enough to execute directly
 - The user explicitly wants a direct code change with no planning phase
 
 ## Core workflow

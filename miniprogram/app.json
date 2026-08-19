@@ -4,7 +4,8 @@
     "pages/data/data",
     "pages/sport/sport",
     "pages/mine/mine",
-    "pages/poop/poop"
+    "pages/poop/poop",
+    "pages/period/period"
   ],
   "window": {
     "backgroundTextStyle": "light",

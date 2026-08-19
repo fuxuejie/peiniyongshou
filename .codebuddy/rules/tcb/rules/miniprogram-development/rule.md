@@ -1,8 +1,18 @@
 ---
 name: miniprogram-development
 description: WeChat Mini Program development skill for building, debugging, previewing, testing, publishing, and optimizing mini program projects. This skill should be used when users ask to create, develop, modify, debug, preview, test, deploy, publish, launch, review, or optimize WeChat Mini Programs, mini program pages, components, routing, project structure, project configuration, project.config.json, appid setup, device preview, real-device validation, WeChat Developer Tools workflows, miniprogram-ci preview/upload flows, or mini program release processes. It should also be used when users explicitly mention CloudBase, wx.cloud, Tencent CloudBase, 腾讯云开发, or 云开发 in a mini program project.
+version: 2.17.1
 alwaysApply: false
 ---
+
+## Standalone Install Note
+
+If this environment only installed the current skill, start from the CloudBase main entry and use the published `cloudbase/references/...` paths for sibling skills.
+
+- CloudBase main entry: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/SKILL.md`
+- Current skill raw source: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/miniprogram-development/SKILL.md`
+
+Keep local `references/...` paths for files that ship with the current skill directory. When this file points to a sibling skill such as `auth-tool` or `web-development`, use the standalone fallback URL shown next to that reference.
 
 ## Activation Contract
 
@@ -16,9 +26,9 @@ alwaysApply: false
 
 ### Then also read
 
-- CloudBase auth -> `../auth-wechat/SKILL.md`
-- CloudBase document DB -> `../no-sql-wx-mp-sdk/SKILL.md`
-- UI generation -> `../ui-design/SKILL.md` first
+- CloudBase auth -> `../auth-wechat/SKILL.md` (standalone fallback: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/auth-wechat/SKILL.md`)
+- CloudBase document DB -> `../no-sql-wx-mp-sdk/SKILL.md` (standalone fallback: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/no-sql-wx-mp-sdk/SKILL.md`)
+- UI generation -> `../ui-design/SKILL.md` (standalone fallback: `https://cnb.cool/tencent/cloud/cloudbase/cloudbase-skills/-/git/raw/main/skills/cloudbase/references/ui-design/SKILL.md`) first
 
 ### Do NOT use for
 
@@ -102,6 +112,55 @@ Use this skill for **WeChat Mini Program development** when you need to:
 - If WeChat Developer Tools is available, use it as the primary path for simulator debugging, panel inspection, preview, and device validation
 - If WeChat Developer Tools is not available, use `miniprogram-ci` as the fallback path for preview, upload, and npm build-related automation
 - For detailed workflows, read [debug and preview reference](references/devtools-debug-preview.md)
+
+## Minimal project skeleton
+
+`app.js`
+
+```js
+App({
+  onLaunch() {
+    console.log("Mini Program launched");
+  },
+});
+```
+
+`pages/index/index.js`
+
+```js
+Page({
+  data: {
+    message: "Hello CloudBase Mini Program",
+  },
+});
+```
+
+`pages/index/index.wxml`
+
+```xml
+<view class="page">
+  <text>{{message}}</text>
+</view>
+```
+
+`pages/index/index.json`
+
+```json
+{
+  "navigationBarTitleText": "Home"
+}
+```
+
+`project.config.json`
+
+```json
+{
+  "appid": "your-mini-program-appid",
+  "projectname": "cloudbase-mini-program",
+  "miniprogramRoot": "./",
+  "compileType": "miniprogram"
+}
+```
 
 ## References
 

@@ -9,6 +9,6 @@ exports.main = async (event, context) => {
     openid: wxContext.OPENID,
     appid: wxContext.APPID,
     unionid: wxContext.UNIONID,
-    weRunData: event.weRunData ? event.weRunData.data : undefined
+    weRunData: event.weRunData || undefined
   }
 }
